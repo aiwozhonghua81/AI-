@@ -1,3 +1,673 @@
+<!-- 中文说明开始 -->
+
+# 🇨🇳 中文详细说明 · AionUi
+
+> **本节是给中文读者写的通俗版说明，面向完全没用过这类工具的朋友。**
+> 下方「↓ 上游 README 原文开始 ↓」以下是上游 [iOfficeAI/AionUi](https://github.com/iOfficeAI/AionUi) 的原文，**一字未删**。
+> 上游另有 9 个语言的 README（简体中文 `docs/readme/readme_ch.md`、繁体、日、韩、葡、西、俄、土、乌），也都保留。
+
+---
+
+## 一、这是什么（一句话说清）
+
+**AionUi 是一个免费的、开源的「AI 员工桌面客户端」—— 它不只跟你聊天，而是让 AI 真正动手操作你电脑上的文件、跑命令、生成文档、爬网页、定时干活。**
+
+### 换个说法
+
+现在的 AI 聊天工具，你问它「帮我把这个文件夹整理一下」，它只能告诉你「你可以这样做...」，然后你自己动手。
+
+**AionUi 是让 AI 真的去做。** 而且它不只接一个模型 —— 你电脑上装了什么 CLI Agent（Claude Code、Codex、Cursor Agent、Qwen Code、Gemini CLI……），它都能**自动发现**并统一调度。
+
+### 三个关键词
+
+| 关键词 | 大白话解释 |
+| --- | --- |
+| **Cowork（协同办公）** | 项目的自我定位 —— AI 不是聊天机器人，是「和你一起干活的同事」 |
+| **Built-in Agent（内置 Agent）** | 装完就能用的 AI 引擎，**不需要你先去装 Claude Code / Gemini CLI** |
+| **Multi-Agent（多 Agent）** | 一次可以开几十个 AI 会话，还能让一群 AI 分工合作 |
+
+### 和 Claude Cowork 的关系
+
+上游 README 里有一张对比表，说得很直白：
+
+| 维度 | Claude Cowork | AionUi |
+| --- | --- | --- |
+| 系统 | 只有 macOS | macOS / Windows / Linux |
+| 模型 | 只有 Claude | Gemini、Claude、DeepSeek、OpenAI、Ollama…… 30+ 平台 |
+| 交互 | 桌面 GUI | 桌面 GUI + WebUI + Telegram / 飞书 / 钉钉 / 微信 |
+| 自动化 | 只能手动 | **Cron 定时任务，7×24 无人值守** |
+| 价格 | $100/月 | **免费开源**（只付你选的模型 API 费） |
+
+---
+
+## 二、适合谁用 / 能解决什么问题
+
+### ✅ 适合你，如果你是
+
+| 你是 | 你会得到什么 |
+| --- | --- |
+| **办公 / 行政 / 运营** | 让 AI 批量整理文件、做 PPT、生成 Excel 报表、每天定时发数据汇总 |
+| **程序员** | 已有 Claude Code / Codex 的话，不用换终端 —— 一个界面管所有 Agent |
+| **不想折腾命令行的人** | 装个 GUI 就能用 AI Agent，不用学 `bun` / `cargo` / 环境变量 |
+| **想自托管 AI 工作台的人** | WebUI 模式跑在服务器上，手机浏览器就能连 |
+| **经常出差 / 多设备** | Telegram、飞书、钉钉、微信都能直接跟自己的 AI 对话 |
+| **AI Agent 开发者** | 一个功能完整、跨平台、开源的多 Agent 桌面端参考实现 |
+
+### 🎯 能解决的具体问题
+
+| 痛点 | AionUi 的解法 |
+| --- | --- |
+| **「下载文件夹太乱了」** | 说一句「按类型整理」，AI 自己判断内容并分类 |
+| **「每周要手动汇总销售数据做报表」** | 建个定时任务，每周自动跑 |
+| **「AI 生成的 PPT 要切出去才能看」** | 内置预览面板，10+ 格式直接看，还能实时编辑 Markdown / 代码 |
+| **「每个 Agent 一个终端，窗口开一堆」** | 统一界面 + 并行会话，每个上下文独立 |
+| **「我不在电脑前也想让它干活」** | WebUI + 聊天平台集成，手机上随时下达指令 |
+| **「不想花钱买 Claude Cowork」** | 免费开源，只付你实际用的模型 API 费用 |
+
+---
+
+## 三、核心功能
+
+### 3.1 内置 Agent —— 装完即用，零配置
+
+- **不需要装任何 CLI 工具** —— Agent 引擎是内置的（基于 [aionrs](https://github.com/iOfficeAI/aionrs)）
+- **不需要复杂配置** —— 粘贴任意一个 API Key 就能开始
+- **完整 Agent 能力** —— 文件读写、网页搜索、图片生成、MCP 工具
+- **21 个开箱即用的专业助手**（内置 assistants）：
+
+| 分类 | 助手 |
+| --- | --- |
+| **通用** | 🤝 Cowork（自主任务执行）、📋 Planning with Files（Manus 风格文件规划）、🧭 AionUi Butler（产品引导） |
+| **PPT** | 📊 PPT Creator、🎬 Morph PPT、🎬 Morph PPT 3D、📐 Pitch Deck Creator（融资路演稿）、📊 Dashboard Creator |
+| **文档** | 📝 Word Creator、📋 Word Form Creator（合同/表单模板）、📚 Academic Paper Writer（学术论文）、💰 Financial Model Creator（财务模型） |
+| **表格** | 📗 Excel Creator |
+| **创意** | 🎮 3D Game（单文件 3D 游戏）、🎨 UI/UX Pro Max（57 种风格、95 套配色）、📈 Beautiful Mermaid（流程图/时序图）、📖 Story Roleplay（沉浸式角色扮演，兼容 SillyTavern） |
+| **其他** | 🧭 HUMAN 3.0 Coach（个人成长教练）、📣 Social Job Publisher（招聘发布）、🦞 moltbook（零部署 AI Agent 社交）、🔧 OpenClaw Setup（OpenClaw 集成配置） |
+
+> 内置 skill 包括 `pptx`、`docx`、`pdf`、`xlsx`、`mermaid` 等。
+
+### 3.2 多 Agent 模式 —— 你已经有的 CLI Agent 全都接进来
+
+**自动检测已安装的 CLI 工具**，包括：
+
+> Built-in Agent、**Claude Code**、**Codex**、**Qwen Code**、**Gemini CLI**、**Goose**、**OpenClaw**、**Augment Code**、**CodeBuddy**、**Kimi CLI**、**OpenCode**、**Factory Droid**、**GitHub Copilot**、**Qoder**、**Mistral Vibe**、**Nanobot**、**Snow**、**Hermes**、**Cursor Agent**、**Pi**、**MiMo Code**、**omp**、**Antigravity**，等等。
+
+- **统一界面** —— 一套 UI 管所有 Agent
+- **并行会话** —— 同时跑多个 Agent，各自上下文独立
+- **MCP 统一管理** —— 所有 MCP 工具在一处管理，按各 Agent 能力自动注入/同步传输方式
+- **YOLO / 全自动模式** —— 支持的 Agent 可开启无人值守模式（具体模式和权限行为取决于所选 Agent）
+
+### 3.3 Team Mode（团队模式）—— 让一群 AI 分工协作
+
+```
+你 ──► Leader（组长 Agent）
+         ├─ 拆解成子任务
+         ├─ 通过内置 Team MCP Server 派给 Teammate
+         └─ 汇总结果
+              ↓
+        Teammate A / B / C  ←→  异步邮箱共享结果
+              ↓
+              共享任务看板（task board）
+```
+
+- **Leader 编排** —— 分配、跟踪、汇总结果
+- **支持的 leader 后端**：Claude Code、Codex、Hermes Agent、Gemini、Snow CLI、Aion CLI (aionrs)
+- **共享工作区** —— 所有 Agent 读写同一个文件夹，文件面板全程可见
+- **动态扩缩** —— 运行时随时增减 Teammate；静默的 Agent 会自动升级为失败状态并可一键移除
+- **细粒度权限** —— 每个 Agent 有**自己的**权限确认对话框，侧边栏徽标显示待审批数量
+- **文件传递** —— Leader 可以把文件附件传给 Teammate
+
+### 3.4 任意 API Key，全功能 Cowork Agent
+
+| 你的 API Key | 你得到什么 |
+| --- | --- |
+| Gemini API Key | Gemini 驱动的 Cowork Agent |
+| OpenAI API Key | GPT 驱动的 Cowork Agent |
+| Anthropic API Key | Claude 驱动的 Cowork Agent |
+| AWS Bedrock 凭据 | 通过 Aion CLI (aionrs) 的 Bedrock Agent |
+| Ollama / LM Studio（本地） | 本地模型 Cowork Agent |
+| NewAPI 网关 | 统一访问 20+ 模型 |
+
+**支持 30+ AI 平台**：
+- **官方**：Gemini、Gemini (Vertex AI)、Anthropic (Claude)、OpenAI
+- **云厂商**：AWS Bedrock、New API
+- **国内**：Dashscope (Qwen)、Dashscope Coding Plan、智谱、Moonshot (Kimi)、千帆 (百度)、混元 (腾讯)、零一、ModelScope、无问芯华、天翼、阶跃星辰、SiliconFlow-CN、PPIO
+- **国际**：DeepSeek、MiniMax、Novita、OpenRouter、SiliconFlow、xAI、Ark (火山引擎)、Poe
+- **本地**：Ollama、LM Studio（通过自定义平台填本地 API 端点）
+
+### 3.5 定时任务（Cron）—— 7×24 无人值守
+
+- **三种调度模式**
+  - `Cron 表达式` —— 标准 5 段 cron，支持时区（如 `0 9 * * 1` + `Asia/Shanghai`）
+  - `每 N 分钟/小时` —— 固定间隔，如每 30 分钟
+  - `一次性` —— 指定时间触发一次后自动禁用
+- **两种执行模式**
+  - `继续已有会话` —— 追加到绑定的会话，AI 保留完整上下文历史
+  - `每次新建会话` —— 每次触发开新会话，适合独立的周期报表
+- **AI 自己创建任务** —— 代理可以在对话中自主创建定时任务
+- **防休眠** —— 任务活动时 AionUi 自动阻止系统睡眠，唤醒后检测错过的触发
+- **细粒度配置** —— 每个任务可单独设置模型、工作目录、推理强度
+
+### 3.6 预览面板 —— 10+ 格式即时查看
+
+| 类别 | 支持格式 |
+| --- | --- |
+| **文档** | PDF、Word (`.doc`/`.docx`/`.odt`)、Excel (`.xls`/`.xlsx`/`.ods`/`.csv`)、PowerPoint (`.ppt`/`.pptx`/`.odp`) |
+| **代码** | JavaScript、TypeScript、Python、Java、Go、Rust、C/C++、CSS、JSON、XML、YAML、Shell 等 **30+ 种** |
+| **标记** | Markdown (`.md`/`.markdown`)、HTML (`.html`/`.htm`) |
+| **图片** | PNG、JPG、JPEG、GIF、SVG、WebP、BMP、ICO、TIFF、AVIF |
+| **其他** | Diff (`.diff`/`.patch`) |
+
+- **即时预览** —— AI 生成文件后直接看，不用切应用
+- **实时跟踪 + 可编辑** —— 自动跟踪文件变化，支持实时编辑 Markdown / 代码 / HTML
+- **多标签页** —— 同时打开多个文件
+
+### 3.7 智能文件管理
+
+- **自动整理** —— 智能识别内容并自动分类，文件夹保持整洁
+- **高效批量** —— 一键重命名、合并文件
+- **自动化执行** —— Agent 可独立执行文件操作、读写文件、自动完成任务
+
+### 3.8 Excel 数据处理
+
+- **智能分析** —— AI 分析数据模式并生成洞察
+- **自动美化** —— 自动把凌乱的 Excel 报表改成专业样式
+- **数据转换** —— 用自然语言命令转换、合并、重构数据
+- **报表生成** —— 从原始数据生成综合报表
+
+### 3.9 AI 图像生成与编辑
+
+- **文生图** —— 自然语言描述生成图片
+- **图像编辑** —— 修改和增强已有图片
+- **图像识别** —— 分析并描述图片内容
+- **批量处理** —— 一次生成多张图
+
+### 3.10 文档生成（PPT / Word / Markdown）
+
+- **PPTX 生成器** —— 从大纲或主题生成专业演示
+- **Word 文档** —— 生成结构规范的 Word 文档
+- **Markdown 文件** —— 创建并格式化 Markdown 文档
+- **PDF 转换** —— 在各种文档格式之间转换
+
+### 3.11 多处可达（Cowork from Anywhere）
+
+- **WebUI 模式** —— 浏览器访问，手机 / 平板 / 任何电脑都可以。支持局域网、跨网、服务器部署，扫码或密码登录
+- **聊天平台集成**
+  - **Telegram** —— 直接在 Telegram 里跟自己的 Agent 对话
+  - **飞书（Lark）** —— 通过飞书机器人做企业协作
+  - **钉钉** —— AI Card 流式输出，自动降级
+  - **微信** —— 个人微信账号集成
+  - **企业微信、Slack、Discord** —— 更多平台即将支持
+
+> 配置位置：**AionUi 设置 → WebUI 设置 → Channel**，填 Bot Token。
+
+### 3.12 其他
+
+- **界面自定义** —— 用自己的 CSS 代码自定义颜色、样式、布局
+- **多任务并行** —— 多个对话同时开，各自上下文独立不串
+
+---
+
+## 四、怎么快速上手
+
+### 4.1 先决条件（用官方安装包）
+
+| 项目 | 要求 |
+| --- | --- |
+| **macOS** | 10.15 或更高 |
+| **Windows** | Windows 10 或更高 |
+| **Linux** | Ubuntu 18.04+ / Debian 10+ / Fedora 32+ |
+| **内存** | 建议 4GB+ |
+| **存储** | 500MB+ 可用空间 |
+
+### 4.2 最简单的方式：下载安装包
+
+去 [Releases 页面](https://github.com/iOfficeAI/AionUi/releases) 下载对应你系统的安装包（macOS / Windows / Linux），双击安装。
+
+**macOS 也可以用 Homebrew：**
+
+```bash
+brew install aionui
+```
+
+### 4.3 三步开始用
+
+1. **安装** AionUi
+2. **填入任意一个 API Key**
+3. **开始 Cowork** —— 内置 AI Agent 已经就绪
+
+### 4.4 WebUI 模式（浏览器 / 服务器 / 手机访问）
+
+#### 方式一：命令行启动
+
+```cmd
+# Windows
+"C:\Program Files\AionUi\AionUi.exe" --webui
+
+# macOS / Linux
+AionUi --webui
+```
+
+默认访问 `http://localhost:3000`。
+
+**远程访问**加 `--remote` 参数：
+
+```bash
+AionUi --webui --remote
+```
+
+#### 方式二：Linux 无头服务器部署
+
+**安装 .deb 包：**
+
+```bash
+# 下载最新的 deb 包
+wget https://github.com/iOfficeAI/AionUi/releases/latest/download/AionUi-linux-amd64.deb
+
+# 安装
+sudo dpkg -i AionUi-linux-amd64.deb
+sudo apt-get install -f   # 修复缺失依赖
+```
+
+> **容器提示**：如果遇到 `libegl1` / `libgles2` 依赖错误（NVIDIA 容器里常见），用 `dpkg --force-all -i` 强制安装。
+
+**服务管理脚本**（很多云环境没有 systemd，用 nohup 方案）：
+
+```bash
+#!/bin/bash
+# AionUi WebUI 无头启动脚本
+# 用法：./start-aionui.sh [start|stop|restart|status]
+
+PIDFILE="/var/run/aionui.pid"
+LOGFILE="/var/log/aionui.log"
+WORKDIR="$HOME"   # 改成你的工作目录
+
+start() {
+    cd "$WORKDIR"
+    nohup xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+        /usr/bin/AionUi --webui --remote --no-sandbox \
+        > "$LOGFILE" 2>&1 &
+    echo $! > "$PIDFILE"
+    sleep 3
+    # ...
+}
+```
+
+`Xvfb`（虚拟显示器）会由这个脚本通过 `xvfb-run` **自动启用**，你不用自己配。
+
+#### 方式三：Docker
+
+仓库根目录有 `Dockerfile`，构建产物是 Web 服务：
+
+```bash
+docker build -t aionui .
+docker run -d -p 3000:3000 -v $(pwd)/data:/data aionui
+```
+
+镜像里的关键环境变量：
+
+| 变量 | 值 |
+| --- | --- |
+| `PORT` | `3000` |
+| `NODE_ENV` | `production` |
+| `ALLOW_REMOTE` | `true` |
+| `DATA_DIR` | `/data`（SQLite 数据卷） |
+
+#### 方式四：一键安装脚本（WebUI）
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/iOfficeAI/AionUi/main/scripts/install-web.sh | bash
+
+# 指定版本
+VERSION=1.0.0 bash install-web.sh
+
+# 指定安装目录
+INSTALL_DIR=/opt/aionui-web bash install-web.sh
+```
+
+脚本支持的参数：
+
+| 参数 | 说明 | 默认值 |
+| --- | --- | --- |
+| `--version <ver>` | 安装指定版本 | latest 或 CI 内嵌版本 |
+| `--mirror <url>` | 指定镜像源 | GitHub Releases |
+| `--install-dir <path>` | 安装目录 | `~/.local/share/aionui-web` |
+| `--bin-dir <path>` | 可执行文件目录 | `~/.local/bin` |
+| `MIRROR` | 同 `--mirror` | — |
+| `CREATE_SYMLINK` | 是否建软链接 | `1` |
+
+### 4.5 开发者：从源码跑
+
+**先决条件**（来自 `docs/contributing/development.md`）：
+
+| 需要什么 | 版本 |
+| --- | --- |
+| **Node.js** | 22 或更高 |
+| **bun** | 包管理器和运行时（[bun.sh](https://bun.sh)） |
+| **Rust stable + Cargo** | 构建本地 AionCore 后端 |
+| **Python** | 3.11+（编译原生模块用） |
+| **prek** | PR 代码检查器（`npm install -g @j178/prek`） |
+
+**重要：AionUi 的开发依赖两个仓库。**
+
+```
+workspace/
+|-- AionCore/     ← Rust 后端，提供 aioncore 可执行文件
+`-- AionUi/       ← Electron 桌面端，自动启动后端二进制
+```
+
+**第 1 步：克隆两个仓库**
+
+```bash
+git clone https://github.com/iOfficeAI/AionCore.git
+git clone https://github.com/iOfficeAI/AionUi.git
+```
+
+**第 2 步：构建安装 AionCore**
+
+macOS / Linux：
+```bash
+cd AionCore
+cargo clean
+cargo install --path crates/aionui-app --locked
+
+# 让 Cargo 安装的二进制在当前 shell 可见
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# 验证 AionUi 能找到后端
+which aioncore
+aioncore --help
+```
+
+Windows PowerShell：
+```powershell
+cd AionCore
+cargo clean
+cargo install --path crates/aionui-app --locked
+
+$env:Path = "$env:USERPROFILE\.cargo\bin;$env:Path"
+
+where.exe aioncore
+aioncore --help
+```
+
+**第 3 步：启动 AionUi**
+
+```bash
+cd AionUi
+bun install
+bun run start
+```
+
+### 4.6 常用 npm 脚本
+
+```bash
+bun run dev        # Electron 开发模式（Vite HMR）
+bun run start      # 同上
+bun run start:multi # 多实例模式
+bun run webui      # WebUI 开发模式
+bun run webui:remote # WebUI + 远程访问
+bun run webui:prod  # WebUI 生产模式
+bun run cli        # CLI 模式
+bun run package    # 构建（不打包）
+bun run dist:mac   # 打包 macOS
+bun run dist:win   # 打包 Windows
+bun run dist:linux # 打包 Linux
+bun run resetpass  # 重置密码
+```
+
+也有 `justfile` 提供更顺手的配方：
+
+```bash
+just dev           # 开发服务器
+just webui         # WebUI 开发
+just webui-remote  # WebUI 远程
+just webui-prod    # WebUI 生产
+just cli           # CLI 模式
+```
+
+---
+
+## 五、常见问题 / 注意事项
+
+### 坑 1：一定要先装 AionCore，桌面端才能跑
+
+**症状**：`bun run start` 起来了但界面报错或一直转圈。
+
+**原因**：AionUi 只是个 Electron 外壳，真正的后端是 `aioncore` 这个 Rust 二进制。桌面开发服务器通过 `bun run start` 继承的 `PATH` 找它。
+
+**解法**：先在 AionCore 仓库 `cargo install`，再 `which aioncore` / `where.exe aioncore` 确认能找到。找不到就把 `~/.cargo/bin` 加进 PATH，**重开终端**（当前终端不生效）。
+
+### 坑 2：Windows 上 Rust 编译报缺原生构建工具
+
+**症状**：Rust 编译失败，提示缺 MSVC / build tools。
+
+**解法**：装 **Microsoft C++ Build Tools**（Visual Studio 安装器里可选），然后**重开终端**。
+
+### 坑 3：服务器上没显示器，Electron 起不来
+
+**症状**：Linux 云服务器上跑 `--webui` 直接崩。
+
+**解法**：用 `xvfb-run` 包一层。仓库给的脚本已经这么写了：
+
+```bash
+xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+    /usr/bin/AionUi --webui --remote --no-sandbox
+```
+
+### 坑 4：容器里装不上 `libegl1` / `libgles2`
+
+**症状**：`dpkg -i` 报缺这两个库。NVIDIA 容器里很常见。
+
+**解法**：`dpkg --force-all -i AionUi-linux-amd64.deb`
+
+### 坑 5：容器里 Office 预览组件启动就崩
+
+**症状**：预览 `.docx` / `.xlsx` 报 ICU 相关错误。
+
+**原因**：Office 预览组件 officecli 是 **.NET 二进制**，缺 ICU 库会在启动时 abort；而 Debian 基础镜像不带 ICU。
+
+**解法**：仓库的 `Dockerfile` 已经处理了 —— 运行时镜像里装了 `libicu-dev`（版本无关，能一直匹配 `libicuNN`）。**自己构建镜像时别忘了加这一步。**
+
+### 坑 6：数据存在哪？会不会上传？
+
+**AionUi 的所有数据都存在本地 SQLite 数据库里，不上传到任何服务器。** 容器部署时数据在 `/data` 卷，记得挂出来：
+
+```bash
+-v $(pwd)/data:/data
+```
+
+### 坑 7：定时任务时电脑休眠了会不会漏跑
+
+**不会漏掉**。AionUi 在任务活动时自动阻止系统睡眠，**唤醒后会检测错过的触发**。
+
+但如果你强制关掉了应用，那当然不会跑 —— 定时任务需要应用在运行。
+
+### 坑 8：多实例模式
+
+默认一个实例。想同时开多个（比如不同工作区）：
+
+```bash
+bun run start:multi
+# 或设置环境变量 AIONUI_MULTI_INSTANCE=1
+```
+
+### 坑 9：Team Mode 里某个 Agent 一直不吭声
+
+**症状**：某个 Teammate 好像「静默」了。
+
+**解法**：**静默的 Agent 会自动升级为失败状态**，可以一键移除。也检查一下是不是卡在权限确认对话框上 —— Team Mode 里**每个 Agent 有自己的权限对话框**，侧边栏徽标会显示待审批数量。
+
+### 坑 10：内置助手列表在哪看
+
+助手和内置 skill 的**权威定义在 AionCore 仓库里**：
+
+- 助手目录：`AionCore/crates/aionui-app/assets/builtin-assistants/assistants.json`
+- 内置 skill：`AionCore/crates/aionui-app/assets/builtin-skills`
+
+AionUi 里助手规则本身是 **Markdown**，可以自定义。
+
+### 坑 11：agent 到底支持哪些？
+
+AionUi **自动检测**已安装的 CLI Agent。上游列了 23 个（Claude Code、Codex、Cursor Agent、Gemini CLI、Qwen Code、OpenCode、Kimi CLI、Goose、OpenClaw、Augment Code、CodeBuddy、Factory Droid、GitHub Copilot、Qoder、Mistral Vibe、Nanobot、Snow、Hermes、Pi、MiMo Code、omp、Antigravity……）。但**能不能真正用起来取决于该 Agent 自身的能力和你的配置**。
+
+---
+
+## 六、目录结构速览
+
+```
+AionUi/
+├── packages/                  ← monorepo（bun workspaces）
+│   ├── desktop/                Electron 桌面端
+│   │   ├── src/
+│   │   │   ├── main/            主进程
+│   │   │   ├── preload/         预加载脚本
+│   │   │   ├── renderer/        界面
+│   │   │   ├── common/          前后端共用代码
+│   │   │   └── sentry.ts        错误上报
+│   │   ├── electron.vite.config.ts
+│   │   └── electron-builder.yml  打包配置
+│   ├── web-host/                Web 服务端（Docker 里跑的就是它）
+│   ├── web-cli/                 CLI 模式（bin/ + src/）
+│   └── shared-scripts/          各包共用的构建脚本
+├── scripts/                   ← 30+ 个构建/发布/校验脚本
+│   ├── install-web.sh            WebUI 一键安装脚本
+│   ├── install-ubuntu.sh         Ubuntu 安装脚本
+│   ├── build-with-builder.js     打包入口
+│   ├── webui.ts                  WebUI 启动器
+│   ├── prepareAioncore.js        准备 AionCore 后端
+│   ├── resolveAioncoreVersion.js 解析 AionCore 版本
+│   ├── check-i18n.js             i18n 校验
+│   ├── generate-i18n-types.js    生成 i18n 类型
+│   ├── smoke-test-install-web.sh  Web 安装冒烟测试
+│   ├── smoke-test-web-cli.sh     Web CLI 冒烟测试
+│   └── build-mcp-servers.js      MCP Server 构建
+├── docs/                      ← 文档
+│   ├── contributing/
+│   │   ├── development.md          开发指南（本节主要依据）
+│   │   └── file-structure.md       文件结构说明
+│   ├── guides/
+│   │   ├── webui.md                WebUI 启动指南（各平台）
+│   │   ├── deploy-server.md        无头服务器部署指南
+│   │   ├── custom-theme.md         自定义主题
+│   │   ├── cdp.md                  CDP 相关
+│   │   ├── hub-testing.md          Hub 测试
+│   │   └── acp-image-output.zh-CN.md  ACP 图片输出（中文）
+│   ├── readme/                 ← 9 个语言的 README
+│   │   ├── readme_ch.md            简体中文
+│   │   ├── readme_tw.md            繁体中文
+│   │   ├── readme_jp.md / readme_ko.md
+│   │   └── readme_es.md / readme_pt.md / readme_tr.md / readme_ru.md / readme_uk.md
+│   ├── prds/                   ← 产品需求文档
+│   └── theming/                ← 主题相关
+├── mobile/                    ← 移动端相关
+├── homebrew/                  ← Homebrew 打包配置
+├── examples/                  ← 示例
+├── resources/                 ← 图片、二维码等资源
+├── public/                    ← 静态资源
+├── patches/                   ← pnpm/bun 依赖补丁
+├── tests/                     ← 测试
+├── .github/                   ← CI 工作流
+├── .gemini/ .claude/ .aionui/ ← 各 AI 工具的项目配置和 skill
+├── package.json / bun.lock    ← 依赖（bun workspaces）
+├── Dockerfile                 ← Web 服务镜像
+├── justfile                   ← just 命令配方
+├── Makefile                   ← 少量辅助 target
+├── tsconfig.json / uno.config.ts / playwright.config.ts / vitest.config.ts
+├── AGENTS.md / CLAUDE.md      ← 给 AI 编码助手看的项目约定
+├── CONTRIBUTING.md / CONTRIBUTING.zh.md
+├── CHANGELOG.md / LICENSE (Apache-2.0)
+└── readme.md                  ← 你正在看的这个文件（默认首页）
+```
+
+### 关键文件一句话解释
+
+| 文件/目录 | 一句话说明 |
+| --- | --- |
+| `packages/desktop/` | Electron 桌面端 —— 界面在这 |
+| `packages/web-host/` | Web 服务端 —— Docker 部署跑的就是它 |
+| `packages/web-cli/` | 命令行模式 |
+| `scripts/install-web.sh` | WebUI 一键安装脚本（支持版本/镜像源/目录） |
+| `scripts/prepareAioncore.js` | 下载/准备 AionCore 后端二进制 |
+| `docs/contributing/development.md` | 开发环境搭建的权威文档 |
+| `docs/guides/deploy-server.md` | 无头服务器部署（含 Xvfb、nohup 服务脚本） |
+| `docs/readme/readme_ch.md` | 官方简体中文版 README |
+| `justfile` | `just dev` / `just webui` 等便捷命令 |
+| `AGENTS.md` / `CLAUDE.md` | 项目给 AI 编码助手（Claude Code 等）的约定文件 |
+
+---
+
+## 七、本仓库说明
+
+| 项目 | 说明 |
+| --- | --- |
+| **本仓库** | `aiwozhonghua81/AI-` —— 一个 **fork（派生仓库）**。仓库名在 GitHub 上就是一个 `AI-`（Fork 名称被截断） |
+| **上游项目** | **AionUi** —— Cowork with AI Agents |
+| **上游地址** | https://github.com/iOfficeAI/AionUi |
+| **官网** | https://www.aionui.com |
+| **版本** | 2.2.2（package.json） |
+| **技术栈** | Electron + React（桌面） / bun workspaces / Rust（AionCore 后端） |
+| **许可证** | **Apache-2.0**（宽松，可商用闭源） |
+| **本仓库改动** | 仅在 `readme.md` 顶部新增本中文说明区块；**未修改任何源码文件** |
+
+### ⚠️ 关于文件名是小写的 `readme.md`
+
+上游 AionUi 的默认 README 文件名是 **`readme.md`（全小写）**，不是 `README.md`。本仓库保持一致。GitHub 对大小写敏感，clone 下来就是 `readme.md`。
+
+### 关于本仓库曾经「只有 1 个文件」
+
+**排查结论：不是空仓库，也不是 gitlink/submodule。**
+
+- 远端 `refs/heads/main` 指向 `11cd2a9a2`，是一个正常提交
+- 该提交下有 **2344 个文件**（`git ls-files | wc -l`）
+- 本地 clone 时 `.git/HEAD` 引用损坏（`fatal: failed to resolve HEAD as a valid ref`），导致工作区看起来是空的
+- **修复方式**：`git fetch origin main && git checkout -b main origin/main` —— 之后一切正常
+
+所以**内容是完整的**，不是「本 fork 内容待同步」。
+
+### README 的结构
+
+```
+┌─────────────────────────────────────────────┐
+│  👆 本节：中文详细说明（面向普通读者）        │  ← 本次新增
+├─────────────────────────────────────────────┤
+│  👇 下方：上游 README 原文（未删改）           │  ← 上游 iOfficeAI/AionUi 撰写
+└─────────────────────────────────────────────┘
+```
+
+- 上游 README 共 **747 行**，内容详尽：与 Claude Cowork 的对比表、21 个内置助手列表、30+ 支持平台列表、多 Agent / Team Mode 详解、定时任务、预览面板、文件管理、Excel、图像、文档生成、WebUI 与聊天平台集成、FAQ、社区链接。**这些内容全部保留在下方。**
+- 另外 9 个语言的 README 也**全部保留**在 `docs/readme/` 目录。
+- 本中文区块的**增量价值**在于：
+  1. 把「安装 / WebUI / 服务器部署 / Docker / 源码开发」四条路径的**真实命令**从 `docs/` 里挖出来汇总成一份速查
+  2. 补充了 11 条**实际会踩的坑**（AionCore 必须先装、Windows C++ Build Tools、Xvfb、libegl1、容器 ICU、Team Mode 静默 Agent 等）
+  3. 补充了「AionUi + AionCore 双仓库」这个上游 README 里只在开发章节提一句、但实际最容易卡住的关键结构
+
+---
+
+## 📌 快速自查清单
+
+想快速体验：
+
+- [ ] 从 Releases 下载了对应系统的安装包
+- [ ] 准备了一个 API Key（Gemini / OpenAI / Anthropic 任意一个）
+- [ ] 至少 4GB 内存、500MB 磁盘空间
+- [ ] 想在手机上用 → 装完记得开 WebUI 并配置 Channel Bot Token
+
+想开发：
+
+- [ ] Node.js 22+、bun、Rust stable、Cargo、Python 3.11+、prek 都装好了
+- [ ] **AionCore 已 clone 并 `cargo install` 成功**
+- [ ] `which aioncore` / `where.exe aioncore` 有输出
+- [ ] `~/.cargo/bin` 已在 PATH 里（且**重开过终端**）
+
+---
+
+<!-- 中文说明结束 -->
+
+---
+
+↓ **上游 README 原文开始**（以下内容来自 [iOfficeAI/AionUi](https://github.com/iOfficeAI/AionUi)，未做任何删改） ↓
+
 <p align="center">
   <img src="./resources/aionui-banner-1.png" alt="AionUi - Cowork with AI Agents" width="100%">
 </p>
